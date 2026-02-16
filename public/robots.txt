@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.epitomecreatives.com
+
+# Sitemaps
+Sitemap: https://www.epitomecreatives.com/sitemap.xml
