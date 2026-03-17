@@ -54,7 +54,7 @@ const iconVariants = {
   hover: {
     scale: 1.1,
     rotate: 360,
-    backgroundColor: "#374151",
+    boxShadow: "0 16px 36px rgba(168,85,247,0.24)",
     transition: {
       duration: 0.6,
       ease: [0.42, 0, 1, 1] as [number, number, number, number], // cubic-bezier for easeOut
@@ -64,7 +64,7 @@ const iconVariants = {
 
 export default function WhyChooseUsSection() {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="brand-section-a py-16">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -84,7 +84,7 @@ export default function WhyChooseUsSection() {
             At Epitome Creatives, we elevate your brand through striking visual narratives that transform products into must-have experiences. 
           </motion.p>
           <motion.div
-            className="w-24 h-px bg-black mx-auto mt-6"
+            className="brand-gradient-line mx-auto mt-6 h-px w-24"
             initial={{ width: 0 }}
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
@@ -102,17 +102,17 @@ export default function WhyChooseUsSection() {
           {benefits.map((benefit, index) => (
             <motion.div
               key={index}
-              className="bg-white p-8 rounded-lg shadow-sm group"
+              className="brand-soft-panel group rounded-lg p-8"
               variants={cardVariants}
               whileHover={{
                 y: -10,
-                boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
+                boxShadow: "0 20px 40px rgba(168,85,247,0.14)",
                 transition: { duration: 0.3 },
               }}
             >
               <div className="mb-6">
                 <motion.div
-                  className="w-16 h-16 bg-black rounded-lg flex items-center justify-center"
+                  className="flex h-16 w-16 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 shadow-lg shadow-fuchsia-200/70"
                   whileHover="hover"
                   variants={iconVariants}
                 >
@@ -124,7 +124,7 @@ export default function WhyChooseUsSection() {
 
               <motion.h3
                 className="text-xl font-medium mb-4"
-                whileHover={{ color: "#374151" }}
+                whileHover={{ color: "#7E22CE" }}
                 transition={{ duration: 0.3 }}
               >
                 {benefit.title}
@@ -132,7 +132,7 @@ export default function WhyChooseUsSection() {
 
               <motion.p
                 className="text-gray-600 leading-relaxed"
-                whileHover={{ color: "#4B5563" }}
+                whileHover={{ color: "#6B21A8" }}
                 transition={{ duration: 0.3 }}
               >
                 {benefit.description}

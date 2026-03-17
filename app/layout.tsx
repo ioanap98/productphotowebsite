@@ -65,7 +65,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} bg-gradient-to-t from-blue-100 to-white text-black min-h-screen`}>
+      <body className={`${inter.variable} brand-page-background text-black min-h-screen`}>
       {/* screenshot toggle: client component */}
    
       <main>

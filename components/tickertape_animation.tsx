@@ -16,7 +16,7 @@ const marqueeStyle: React.CSSProperties = {
 
 export default function TickerTape() {
   return (
-    <div className="w-full overflow-hidden bg-black text-white text-3xl h-[100px] flex items-center py-2">
+    <div className="flex h-[100px] w-full items-center overflow-hidden bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 py-2 text-3xl text-white shadow-[0_16px_36px_rgba(168,85,247,0.18)]">
       {/* inject keyframes */}
       <style>{keyframes}</style>
 

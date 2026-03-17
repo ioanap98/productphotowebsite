@@ -39,7 +39,7 @@ export default function PortfolioGrid() {
   if (!images) return <div className="p-6">Loading…</div>;
 
   return (
-    <section id="portfolio" className="py-24">
+    <section id="portfolio" className="brand-section-b py-24">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -61,35 +61,16 @@ export default function PortfolioGrid() {
             {images.map((filename) => (
               <motion.div
                 key={filename}
-                className="group relative overflow-hidden bg-gray-100 aspect-square"
+                className="relative aspect-square overflow-hidden rounded-2xl"
                 layout
-                whileHover={{
-                  scale: 1.05,
-                  zIndex: 10,
-                  transition: { duration: 0.3 },
-                }}
               >
                 <Image
                   src={`/portfolio/${filename}`}
                   alt={filename}
                   fill
-                  className="object-cover transition-transform duration-200 hover:scale-105"
+                  className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-center justify-center"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.div
-                    className="text-center text-white"
-                    initial={{ y: 20, opacity: 0 }}
-                    whileHover={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.3, delay: 0.1 }}
-                  >            
-                  </motion.div>
-                </motion.div>
               </motion.div>
             ))}
           </AnimatePresence>

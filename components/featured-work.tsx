@@ -79,7 +79,7 @@ const imageVariants = {
 
 export default function FeaturedWork() {
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="brand-section-a py-24">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -90,7 +90,7 @@ export default function FeaturedWork() {
         >
           <h2 className="text-4xl md:text-5xl font-light mb-4">Featured Work</h2>
           <motion.div
-            className="w-24 h-px bg-black mx-auto"
+            className="brand-gradient-line mx-auto h-px w-24"
             initial={{ width: 0 }}
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
@@ -115,7 +115,7 @@ export default function FeaturedWork() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <span className="text-sm font-medium text-gray-500 uppercase tracking-wider">{project.category}</span>
+                  <span className="text-sm font-medium uppercase tracking-wider text-purple-600">{project.category}</span>
                 </motion.div>
 
                 <motion.h3
@@ -146,7 +146,7 @@ export default function FeaturedWork() {
                   {project.images.map((image, imgIndex) => (
                     <motion.div
                       key={imgIndex}
-                      className={`relative overflow-hidden rounded-lg group ${
+                      className={`relative overflow-hidden rounded-lg ${
                         imgIndex === 0 ? "col-span-2 aspect-[3/2]" : "aspect-square"
                       }`}
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -157,21 +157,12 @@ export default function FeaturedWork() {
                         delay: imgIndex * 0.1,
                         ease: "easeOut",
                       }}
-                      whileHover={{
-                        scale: 1.05,
-                        transition: { duration: 0.3 },
-                      }}
                     >
                       <Image
                         src={image || "/placeholder.svg"}
                         alt={`${project.title} ${imgIndex + 1}`}
                         fill
                         className="object-cover"
-                      />
-                      <motion.div
-                        className="absolute inset-0 bg-black/0"
-                        whileHover={{ backgroundColor: "rgba(0,0,0,0.1)" }}
-                        transition={{ duration: 0.3 }}
                       />
                     </motion.div>
                   ))}
@@ -197,10 +188,6 @@ export default function FeaturedWork() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{
-                  scale: 1.05,
-                  transition: { duration: 0.3 },
-                }}
               >
                 <Image
                   src={image || "/placeholder.svg"}

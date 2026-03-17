@@ -79,7 +79,7 @@ export default function ContactSection() {
   ]
 
   return (
-    <section id="contact" className="py-24">
+    <section id="contact" className="brand-section-b py-24">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -99,6 +99,7 @@ export default function ContactSection() {
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
           {/* Form */}
           <motion.div
+            className="brand-soft-panel rounded-3xl p-8 md:p-10"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -123,12 +124,12 @@ export default function ContactSection() {
                   name="name"
                   placeholder="Your Name *"
                   required
-                  className="border-gray-300 focus:border-black"
+                  className="border-white/70 bg-white/80"
                 />
                 <Input
                   name="company"
                   placeholder="Company/Brand Name"
-                  className="border-gray-300 focus:border-black"
+                  className="border-white/70 bg-white/80"
                 />
               </div>
 
@@ -138,13 +139,13 @@ export default function ContactSection() {
                   name="email"
                   placeholder="Email Address *"
                   required
-                  className="border-gray-300 focus:border-black"
+                  className="border-white/70 bg-white/80"
                 />
                 <Input
                   type="tel"
                   name="phone"
                   placeholder="Phone Number"
-                  className="border-gray-300 focus:border-black"
+                  className="border-white/70 bg-white/80"
                 />
               </div>
 
@@ -152,7 +153,7 @@ export default function ContactSection() {
                 <select
                   name="projectType"
                   required
-                  className="w-full p-3 border border-gray-300 rounded-md focus:border-black"
+                  className="w-full rounded-md border border-white/70 bg-white/80 p-3 focus:border-purple-300 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"
                 >
                   <option value="">Select service *</option>
                   <option value="product-photography">
@@ -177,14 +178,14 @@ export default function ContactSection() {
                 name="projectDetails"
                 placeholder="Describe your products, brand style..."
                 required
-                className="border-gray-300 focus:border-black"
+                className="border-white/70 bg-white/80"
                 rows={4}
               />
 
               <Button
                 type="submit"
                 disabled={submitting}
-                className="w-full bg-black text-white hover:bg-gray-800"
+                className="brand-gradient-button w-full border-0 text-white"
                 size="lg"
               >
                 {submitting ? 'Sending…' : 'Request a Quote'}
@@ -206,6 +207,7 @@ export default function ContactSection() {
 
           {/* Steps & Contact Info */}
           <motion.div
+            className="brand-soft-panel rounded-3xl p-8 md:p-10"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -215,7 +217,7 @@ export default function ContactSection() {
             <div className="space-y-6 mb-12">
               {steps.map((step) => (
                 <div key={step.number} className="flex items-start space-x-4">
-                  <div className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 text-white shadow-lg shadow-fuchsia-200/70">
                     {step.number}
                   </div>
                   <div>
@@ -229,11 +231,11 @@ export default function ContactSection() {
             <h4 className="text-lg font-medium mb-4">Get In Touch</h4>
             <div className="space-y-3">
               <div className="flex items-center space-x-3 group">
-                <Mail className="w-5 h-5" />
+                <Mail className="h-5 w-5 text-purple-700" />
                 <span>hello@epitomecreatives.com</span>
                 <button
                   onClick={copyEmail}
-                  className="ml-2 p-1.5 rounded hover:bg-gray-100 transition-colors"
+                  className="ml-2 rounded p-1.5 transition-all hover:bg-gradient-to-r hover:from-purple-100 hover:via-pink-100 hover:to-blue-100"
                   title="Copy email"
                 >
                   {emailCopied ? (
@@ -244,10 +246,10 @@ export default function ContactSection() {
                 </button>
               </div>
               <div className="flex items-center space-x-3">
-                <Instagram className="w-5 h-5" />
+                <Instagram className="h-5 w-5 text-pink-600" />
                 <a
                   href="https://www.instagram.com/epitome.creatives/"
-                  className="hover:underline"
+                  className="transition-colors hover:text-purple-700 hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

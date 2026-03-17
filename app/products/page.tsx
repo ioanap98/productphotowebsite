@@ -34,7 +34,7 @@ export default function ProductsPage() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-6">
       {images.map((img, index) => (
-        <div key={index} className="relative w-full h-48 rounded overflow-hidden shadow">
+        <div key={index} className="relative w-full h-48 overflow-hidden rounded">
           <Image
             src={`/uploads/${img}`}
             alt={`Uploaded ${img}`}

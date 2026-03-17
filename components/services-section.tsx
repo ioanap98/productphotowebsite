@@ -60,7 +60,7 @@ const iconVariants = {
 
 export default function ServicesSection() {
   return (
-    <section id="services" className="py-24 bg-gray-50">
+    <section id="services" className="brand-section-a-soft py-24">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-16"
@@ -71,7 +71,7 @@ export default function ServicesSection() {
         >
           <h2 className="text-4xl md:text-5xl font-light mb-4">Services</h2>
           <motion.div
-            className="w-24 h-px bg-black mx-auto"
+            className="brand-gradient-line mx-auto h-px w-24"
             initial={{ width: 0 }}
             whileInView={{ width: 96 }}
             viewport={{ once: true }}
@@ -96,23 +96,23 @@ export default function ServicesSection() {
             >
               <div className="mb-8 flex justify-center">
                 <motion.div
-                  className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-500"
+                  className="flex h-20 w-20 items-center justify-center rounded-full border border-white/70 bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 shadow-lg shadow-fuchsia-100/70 transition-shadow duration-500 group-hover:shadow-[0_18px_40px_rgba(168,85,247,0.16)]"
                   whileHover="hover"
                   variants={iconVariants}
                 >
-                  <service.icon className="w-10 h-10 text-black" />
+                  <service.icon className="h-10 w-10 text-purple-700" />
                 </motion.div>
               </div>
               <motion.h3
                 className="text-2xl font-light mb-4"
-                whileHover={{ color: "#374151" }}
+                whileHover={{ color: "#7E22CE" }}
                 transition={{ duration: 0.3 }}
               >
                 {service.title}
               </motion.h3>
               <motion.p
                 className="text-gray-600 leading-relaxed"
-                whileHover={{ color: "#4B5563" }}
+                whileHover={{ color: "#6B21A8" }}
                 transition={{ duration: 0.3 }}
               >
                 {service.description}
@@ -129,7 +129,7 @@ export default function ServicesSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <motion.div
-            className="bg-white rounded-2xl p-12 shadow-lg max-w-4xl mx-auto"
+            className="brand-soft-panel mx-auto max-w-4xl rounded-2xl p-12"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
           >
@@ -149,8 +149,8 @@ export default function ServicesSection() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
                   <motion.div
-                    className="text-4xl font-bold text-black mb-2"
-                    whileHover={{ scale: 1.2, color: "#059669" }}
+                    className="brand-gradient-text mb-2 text-4xl font-bold"
+                    whileHover={{ scale: 1.15 }}
                     transition={{ duration: 0.3 }}
                   >
                     {stat.number}

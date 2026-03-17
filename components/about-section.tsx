@@ -117,7 +117,7 @@ const textVariants = {
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-24">
+    <section id="about" className="brand-section-b py-24">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -129,9 +129,7 @@ export default function AboutSection() {
           >
             <motion.div className="space-y-8 flex flex-col items-start" variants={imageVariants}>
               <motion.div
-                className="relative overflow-hidden rounded-lg group bg-black max-w-md"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
+                className="relative max-w-md overflow-hidden rounded-lg"
               >
                 <video
                   autoPlay
@@ -144,12 +142,6 @@ export default function AboutSection() {
                   <source src="/IMG_4867.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-black/20 to-transparent"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
               </motion.div>
             </motion.div>
 
@@ -166,9 +158,9 @@ export default function AboutSection() {
 
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 {[
-                  "Epitome Creatives is a UK-based studio specialising in product and lifestyle photography for small brands and e-commerce businesses.",
-                  "Founded by Ioana, an engineer-turned-photographer, the studio blends creative vision with strategic thinking to produce clean, purposeful visuals designed for online use.",
-                  "From studio compositions to lifestyle imagery, every shoot is planned with clarity, consistency, and brand impact in mind.",
+                  "Epitome Creatives is a UK-based studio specialising in product and lifestyle photography for modern brands and e-commerce.",
+                  "Founded by Ioana, an engineer turned photographer, the studio combines analytical precision with creative direction to produce imagery that is both visually striking and commercially effective.",
+                  "Every project is approached with intent - from concept to execution - ensuring consistency, clarity, and alignment with your brand’s identity. Whether it’s clean studio compositions or lifestyle storytelling, the focus remains the same: creating purposeful visuals that elevate your brand and perform in digital spaces.",
                 ].map((text, index) => (
                   <motion.p
                     key={index}

@@ -114,7 +114,7 @@ export default function UploadFormPortfolio() {
               src={src}
               alt={`Preview ${idx + 1}`}
               fill
-              className="object-cover rounded shadow"
+              className="object-cover rounded"
               sizes="(max-width: 768px) 50vw, 33vw"
             />
           </div>
