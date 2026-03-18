@@ -14,7 +14,8 @@ import Header from '@/components/navbar';
 
 
 export default function HomePage() {
-  const [images, setImages] = useState<string[]>([]);
+  const [webImages, setWebImages] = useState<string[]>([]);
+  const [mobileImages, setMobileImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
 
@@ -48,16 +49,28 @@ export default function HomePage() {
 
   
 
-  // 1️⃣ Fetch the list of filenames from your API
+  // 1️⃣ Fetch web and mobile images from separate endpoints
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch('/api/images');
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        const data: string[] = await res.json();
-        if (Array.isArray(data)) {
-          // 2️⃣ Build public URLs for each file
-          setImages(data.map((f) => `/uploads/${f}`));
+        const [webRes, mobileRes] = await Promise.all([
+          fetch('/api/images/web'),
+          fetch('/api/images/mobile')
+        ]);
+
+        if (!webRes.ok) throw new Error(`Web images status ${webRes.status}`);
+        if (!mobileRes.ok) throw new Error(`Mobile images status ${mobileRes.status}`);
+
+        const webData: string[] = await webRes.json();
+        const mobileData: string[] = await mobileRes.json();
+
+        if (Array.isArray(webData)) {
+          const urls = webData.map((f) => `/uploads/web/${f}`);
+          setWebImages(urls);
+        }
+        if (Array.isArray(mobileData)) {
+          const urls = mobileData.map((f) => `/uploads/mobile/${f}`);
+          setMobileImages(urls);
         }
       } catch (err) {
         console.error('Failed to load images', err);
@@ -71,7 +84,7 @@ export default function HomePage() {
     return <p className="p-6 text-center">Loading…</p>;
   }
 
-  if (images.length === 0) {
+  if (webImages.length === 0 && mobileImages.length === 0) {
     return <p className="p-6 text-center">No images found.</p>;
   }
 
@@ -80,7 +93,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <HeroSection images={images} />
+      <HeroSection webImages={webImages} mobileImages={mobileImages} />
       {/* <TickerTape /> */}
       <ServicesSection />
       <PortfolioGrid />

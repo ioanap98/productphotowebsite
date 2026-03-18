@@ -48,7 +48,14 @@ export default function PortfolioGrid() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-5xl font-light mb-8">Portfolio</h2>
+          <h2 className="text-4xl md:text-5xl font-light mb-4">Portfolio</h2>
+          <motion.div
+            className="brand-gradient-line mx-auto h-px w-24"
+            initial={{ width: 0 }}
+            whileInView={{ width: 96 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          />
         </motion.div>
 
         <motion.div
@@ -61,7 +68,7 @@ export default function PortfolioGrid() {
             {images.map((filename) => (
               <motion.div
                 key={filename}
-                className="relative aspect-square overflow-hidden rounded-2xl"
+                className="relative aspect-square overflow-hidden"
                 layout
               >
                 <Image

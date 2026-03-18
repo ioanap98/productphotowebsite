@@ -6,11 +6,24 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 
 interface HeroSectionProps {
-  images: string[];
+  webImages: string[];
+  mobileImages: string[];
 }
 
-export default function HeroSection({ images }: HeroSectionProps) {
+export default function HeroSection({ webImages, mobileImages }: HeroSectionProps) {
   const [current, setCurrent] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const images = isMobile ? mobileImages : webImages;
+
+  // Detect screen size
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Auto-rotate every 2 seconds
   useEffect(() => {

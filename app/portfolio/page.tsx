@@ -35,7 +35,7 @@ export default function PortfolioPage() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-6">
       {images.map((img, index) => (
-        <div key={index} className="relative w-full h-48 overflow-hidden rounded">
+        <div key={index} className="relative w-full h-48 overflow-hidden">
           <Image
             src={`/portfolio/${img}`}
             alt={`Uploaded ${img}`}

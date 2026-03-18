@@ -121,6 +121,23 @@ export default function AboutSection() {
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-light mb-4">About Epitome Creatives</h2>
+            <motion.div
+              className="brand-gradient-line mx-auto h-px w-24"
+              initial={{ width: 0 }}
+              whileInView={{ width: 96 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            />
+          </motion.div>
+
+          <motion.div
             className="grid lg:grid-cols-2 gap-16 items-center"
             variants={containerVariants}
             initial="hidden"
@@ -129,7 +146,7 @@ export default function AboutSection() {
           >
             <motion.div className="space-y-8 flex flex-col items-start" variants={imageVariants}>
               <motion.div
-                className="relative max-w-md overflow-hidden rounded-lg"
+                className="relative max-w-md overflow-hidden"
               >
                 <video
                   autoPlay
@@ -146,16 +163,6 @@ export default function AboutSection() {
             </motion.div>
 
             <motion.div variants={textVariants}>
-              <motion.h2
-                className="text-4xl md:text-5xl font-light mb-8"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                About Epitome Creatives
-              </motion.h2>
-
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 {[
                   "Epitome Creatives is a UK-based studio specialising in product and lifestyle photography for modern brands and e-commerce.",

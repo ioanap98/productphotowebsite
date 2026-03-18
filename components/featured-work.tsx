@@ -88,7 +88,7 @@ export default function FeaturedWork() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-5xl font-light mb-4">Featured Work</h2>
+          <h2 className="text-4xl md:text-5xl font-light mb-4">Work</h2>
           <motion.div
             className="brand-gradient-line mx-auto h-px w-24"
             initial={{ width: 0 }}
@@ -146,7 +146,7 @@ export default function FeaturedWork() {
                   {project.images.map((image, imgIndex) => (
                     <motion.div
                       key={imgIndex}
-                      className={`relative overflow-hidden rounded-lg ${
+                      className={`relative overflow-hidden ${
                         imgIndex === 0 ? "col-span-2 aspect-[3/2]" : "aspect-square"
                       }`}
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -183,7 +183,7 @@ export default function FeaturedWork() {
             {["/portfolio/15.png", "/portfolio/8.png"].map((image, index) => (
               <motion.div
                 key={index}
-                className="relative aspect-[4/3] overflow-hidden rounded-lg"
+                className="relative aspect-[4/3] overflow-hidden"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}

@@ -91,9 +91,16 @@ export default function ContactSection() {
           <h2 className="text-4xl md:text-5xl font-light mb-4">
             Ready to Elevate Your Product Visuals?
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          {/* <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Share a few details about your product and brand. We’ll come back to you with a clear proposal and next steps.
-          </p>
+          </p> */}
+          <motion.div
+            className="brand-gradient-line mx-auto mt-6 h-px w-24"
+            initial={{ width: 0 }}
+            whileInView={{ width: 96 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          />
         </motion.div>
 
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
