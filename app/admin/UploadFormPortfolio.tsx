@@ -119,7 +119,7 @@ export default function UploadFormPortfolio() {
 
       <div className="grid grid-cols-2 gap-4 pt-1 md:grid-cols-3">
         {previews.map((src, idx) => (
-          <div key={idx} className="relative aspect-square overflow-hidden border border-white/80 bg-white">
+          <div key={idx} className="relative aspect-square overflow-hidden bg-white">
             <Image src={src} alt={`Preview ${idx + 1}`} fill className="object-cover" sizes="(max-width: 768px) 50vw, 33vw" />
           </div>
         ))}

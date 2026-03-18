@@ -64,13 +64,25 @@ export default function HomePage() {
         const webData: string[] = await webRes.json();
         const mobileData: string[] = await mobileRes.json();
 
-        if (Array.isArray(webData)) {
+        if (Array.isArray(webData) && webData.length > 0) {
           const urls = webData.map((f) => `/uploads/web/${f}`);
           setWebImages(urls);
+          // Preload first web image for faster display
+          const link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'image';
+          link.href = urls[0];
+          document.head.appendChild(link);
         }
-        if (Array.isArray(mobileData)) {
+        if (Array.isArray(mobileData) && mobileData.length > 0) {
           const urls = mobileData.map((f) => `/uploads/mobile/${f}`);
           setMobileImages(urls);
+          // Preload first mobile image for faster display
+          const link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'image';
+          link.href = urls[0];
+          document.head.appendChild(link);
         }
       } catch (err) {
         console.error('Failed to load images', err);

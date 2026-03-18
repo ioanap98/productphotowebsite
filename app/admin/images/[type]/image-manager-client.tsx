@@ -170,13 +170,15 @@ export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) 
                 : bucket === 'mobile'
                   ? { width: 900, height: 1200 }
                   : { width: 1200, height: 1200 };
+            const imageCardClassName =
+              bucket === 'portfolio' ? 'bg-white/80 p-4' : 'border border-white/80 bg-white/80 p-4';
             const heroImageClassName =
               bucket === 'web'
                 ? 'mx-auto h-auto max-h-44 w-auto max-w-full object-contain'
                 : 'mx-auto h-auto max-h-60 w-auto max-w-full object-contain';
 
             return (
-              <article key={filename} className="border border-white/80 bg-white/80 p-4">
+              <article key={filename} className={imageCardClassName}>
                 {isHeroBucket ? (
                   <div className="flex min-h-[11rem] items-center justify-center overflow-hidden bg-white p-2">
                     <Image

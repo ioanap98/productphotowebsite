@@ -205,7 +205,7 @@ export default function FeaturedWork() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            From wellness products to luxury cosmetics, we create imagery that tells your brand&apos;s story
+            From wellness products to luxury cosmetics, I create imagery that tells your brand&apos;s story.
           </motion.p>
         </motion.div>
       </div>

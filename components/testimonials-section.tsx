@@ -73,7 +73,7 @@ export default function WhyChooseUsSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-5xl font-light mb-4">How We Approach Product Photography</h2>
+          <h2 className="text-4xl md:text-5xl font-light mb-4">How I Approach Product Photography</h2>
           <motion.p
             className="text-xl text-gray-600 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
@@ -81,7 +81,7 @@ export default function WhyChooseUsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            At Epitome Creatives, we elevate your brand through striking visual narratives that transform products into must-have experiences. 
+            I create product imagery with a focus on clarity, detail, and visual balance. The goal is simple: to present your product in a way that feels authentic, considered, and ready for real-world use across your brand.
           </motion.p>
           <motion.div
             className="brand-gradient-line mx-auto mt-6 h-px w-24"

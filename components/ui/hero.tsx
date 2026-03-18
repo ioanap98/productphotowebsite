@@ -43,7 +43,10 @@ export default function HeroSection({ webImages, mobileImages }: HeroSectionProp
           alt={`Slide ${current + 1}`}
           fill
           className="object-cover"
-          priority={current === 0}
+          priority={true}
+          loading="eager"
+          sizes="100vw"
+          quality={85}
         />
       </div>
 

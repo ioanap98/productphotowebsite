@@ -165,9 +165,9 @@ export default function AboutSection() {
             <motion.div variants={textVariants}>
               <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
                 {[
-                  "Epitome Creatives is a UK-based studio specialising in product and lifestyle photography for modern brands and e-commerce.",
-                  "Founded by Ioana, an engineer turned photographer, the studio combines analytical precision with creative direction to produce imagery that is both visually striking and commercially effective.",
-                  "Every project is approached with intent - from concept to execution - ensuring consistency, clarity, and alignment with your brand’s identity. Whether it’s clean studio compositions or lifestyle storytelling, the focus remains the same: creating purposeful visuals that elevate your brand and perform in digital spaces.",
+                  "After more than 10 years of passion for photography and a background in engineering, I decided to turn that passion into something tangible - Epitome Creatives, a studio dedicated to thoughtful, clean product imagery.",
+                  "I focus on creating visuals for e-commerce and modern brands that value simplicity, clarity, and strong visual identity.",
+                  "Every project is approached with attention to detail, from lighting to composition, ensuring your product is presented in a way that feels natural, refined, and aligned with your brand.",
                 ].map((text, index) => (
                   <motion.p
                     key={index}

@@ -113,10 +113,10 @@ export default function ContactSection() {
             transition={{ duration: 0.8 }}
           >
             <h3 className="text-2xl font-light mb-4">
-              Tell Us About Your Project
+              Start Your Project
             </h3>
             <p className="text-gray-600 mb-8">
-              Tell us about your products and we'll create a custom photography package for your brand.
+              Share a bit about your product and what you’re looking for, and I’ll get back to you with a tailored approach for your brand.
             </p>
 
             <motion.form

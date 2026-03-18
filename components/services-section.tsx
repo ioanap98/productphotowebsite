@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 const services = [
   {
     icon: Camera,
-    title: "Product Photography",
+    title: "E-commerce Photography",
     description:
       "Crisp, detailed product images designed for e-commerce. Clean compositions that showcase quality and build buyer confidence.",
   },
