@@ -11,7 +11,7 @@ const featuredProjects = [
     description:
       "Complete product photography suite for Nature's Way's Chlorofresh line, featuring both clean tabletop shots and lifestyle imagery that showcases the product's natural, health-focused positioning.",
     images: [
-      "/DSC_0632-Edit.png",
+      "/uploads/web/DSC_0632-Edit.png",
       "/portfolio/10.png",
       "/portfolio/6.png",
     ]
