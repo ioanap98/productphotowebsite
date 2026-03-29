@@ -55,11 +55,11 @@ export default function HeroSection({ webImages, mobileImages }: HeroSectionProp
       {/* Centered text & button */}
       <div className="relative z-10 flex h-full items-center justify-center px-6">
         <div className="mx-auto flex w-full max-w-xl flex-col items-center text-center text-white">
-          <h1 className="text-4xl leading-[1.1] tracking-wide drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)] sm:text-5xl md:text-6xl lg:text-7xl">
+          {/* <h1 className="text-4xl leading-[1.1] tracking-wide drop-shadow-[0_8px_24px_rgba(0,0,0,0.45)] sm:text-5xl md:text-6xl lg:text-7xl">
             <span className="block font-medium text-white/80">CLARITY.</span>
             <span className="block font-medium text-white/80">CONSISTENCY.</span>
             <span className="block font-bold text-white">CONVERSION.</span>
-          </h1>
+          </h1> */}
           <Button
             size="lg"
             className="brand-gradient-button mt-8 border-0 px-8 py-6 text-sm font-semibold md:px-10 md:text-base"
