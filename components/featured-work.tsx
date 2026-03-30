@@ -25,7 +25,7 @@ const featuredProjects = [
      images: [
       "/portfolio/20.png",
       "/portfolio/3.png",
-      "/portfolio/13.png",
+      "/portfolio/06.png",
     ]
   },
 ]
