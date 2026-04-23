@@ -9,7 +9,7 @@ import AboutSection from '@/components/about-section';
 import WhyChooseUsSection from '@/components/testimonials-section';
 import ContactSection from '@/components/contact-section';
 import Footer from '@/components/footer';
-import FeaturedWork from '@/components/featured-work';
+// import FeaturedWork from '@/components/featured-work';
 import Header from '@/components/navbar';
 
 
@@ -109,7 +109,7 @@ export default function HomePage() {
       {/* <TickerTape /> */}
       <ServicesSection />
       <PortfolioGrid />
-      <FeaturedWork />
+      {/* <FeaturedWork /> */}
       <AboutSection />
       <WhyChooseUsSection />
       <ContactSection />
