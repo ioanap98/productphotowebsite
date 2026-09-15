@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated responsive hero images (prepared before dev/build)
+/public/generated/hero/

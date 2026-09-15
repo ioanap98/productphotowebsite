@@ -1,53 +1,94 @@
 // components/ui/hero.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
+import { useState, useEffect, useSyncExternalStore } from 'react';
+import type { HeroImage } from '@/lib/hero-assets.mjs';
 import { Button } from '@/components/ui/button';
 
 interface HeroSectionProps {
-  webImages: string[];
-  mobileImages: string[];
+  webImages: HeroImage[];
+  mobileImages: HeroImage[];
 }
 
-export default function HeroSection({ webImages, mobileImages }: HeroSectionProps) {
+const MOBILE_QUERY = '(max-width: 767px)';
+
+function subscribeToViewport(callback: () => void) {
+  const media = window.matchMedia(MOBILE_QUERY);
+  media.addEventListener('change', callback);
+  return () => media.removeEventListener('change', callback);
+}
+
+export default function HeroSection(props: HeroSectionProps) {
+  const isMobile = useSyncExternalStore(
+    subscribeToViewport,
+    () => window.matchMedia(MOBILE_QUERY).matches,
+    () => false,
+  );
+
+  return <HeroSlideshow key={isMobile ? 'mobile' : 'desktop'} {...props} isMobile={isMobile} />;
+}
+
+function HeroSlideshow({ webImages, mobileImages, isMobile }: HeroSectionProps & { isMobile: boolean }) {
   const [current, setCurrent] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const images = isMobile ? mobileImages : webImages;
+  const [loadedSlides, setLoadedSlides] = useState<Set<number>>(() => new Set());
+  const desktop = webImages.length ? webImages : mobileImages;
+  const mobile = mobileImages.length ? mobileImages : webImages;
+  const slideCount = isMobile ? mobile.length : desktop.length;
+  const next = (current + 1) % (slideCount || 1);
+  const nextReady = loadedSlides.has(next);
 
-  // Detect screen size
+  // Keep the current photo visible until the upcoming slide has loaded.
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    if (slideCount <= 1 || !nextReady) return;
+    const timer = window.setTimeout(() => setCurrent(next), 2000);
+    return () => window.clearTimeout(timer);
+  }, [current, next, nextReady, slideCount]);
 
-  // Auto-rotate every 2 seconds
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [images]);
+  const visibleSlides = slideCount === 0 ? [] : [current];
+  // Start only one slide ahead, after the visible image has finished loading.
+  if (slideCount > 1 && loadedSlides.has(current)) visibleSlides.push(next);
 
   return (
     <section id="hero" className="relative h-screen overflow-hidden">
       {/* Slides */}
       <div className="absolute inset-0">
-        <Image
-          src={images[current] || '/placeholder.svg'}
-          alt={`Slide ${current + 1}`}
-          fill
-          className="object-cover"
-          priority={true}
-          loading="eager"
-          sizes="100vw"
-          quality={85}
-        />
+        {desktop[0]?.preview && (
+          <picture>
+            <source media="(max-width: 767px)" srcSet={mobile[0]?.preview || desktop[0].preview} />
+            <img src={desktop[0].preview} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          </picture>
+        )}
+        {visibleSlides.map((index) => {
+          const desktopImage = desktop[index % desktop.length];
+          const mobileImage = mobile[index % mobile.length];
+
+          return (
+            <picture key={index}>
+              <source media="(max-width: 767px)" srcSet={mobileImage.srcSet || mobileImage.src} sizes="100vw" />
+              {/* These files are optimized before serving, avoiding cold image processing. */}
+              <img
+                src={desktopImage.src}
+                srcSet={desktopImage.srcSet || undefined}
+                sizes="100vw"
+                alt={`Product photography — slide ${index + 1}`}
+                className={`absolute inset-0 h-full w-full object-cover ${index === current ? 'opacity-100' : 'opacity-0'}`}
+                aria-hidden={index !== current}
+                loading="eager"
+                fetchPriority={index === current ? 'high' : 'low'}
+                ref={(image) => {
+                  // Cached images may finish before React hydrates the page.
+                  if (image?.complete && image.naturalWidth > 0) {
+                    setLoadedSlides((previous) => previous.has(index) ? previous : new Set(previous).add(index));
+                  }
+                }}
+                onLoad={() => setLoadedSlides((previous) => {
+                  if (previous.has(index)) return previous;
+                  return new Set(previous).add(index);
+                })}
+              />
+            </picture>
+          );
+        })}
       </div>
 
       <div className="absolute inset-0 bg-black/45" aria-hidden="true" />

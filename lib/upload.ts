@@ -1,3 +1,4 @@
+import { prepareHeroImage } from './hero-assets.mjs';
 import fs from 'fs/promises';
 import path from 'path';
 import sharp from 'sharp';
@@ -189,6 +190,9 @@ export async function saveUploadedFiles(req: Request, relativeDir: string, label
     const filePath = path.join(uploadDir, uniqueName);
 
     await fs.writeFile(filePath, optimizedFile.buffer);
+    const heroBucket = relativeDir === 'public/uploads/mobile' ? 'mobile'
+      : relativeDir === 'public/uploads/web' ? 'web' : null;
+    if (heroBucket) await prepareHeroImage(heroBucket, uniqueName);
     saved.push(uniqueName);
     originalBytes += optimizedFile.originalBytes;
     savedBytes += optimizedFile.savedBytes;

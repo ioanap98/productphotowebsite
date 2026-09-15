@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "predev": "node scripts/prepare-hero-images.mjs",
+    "prebuild": "node scripts/prepare-hero-images.mjs"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

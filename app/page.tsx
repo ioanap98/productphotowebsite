@@ -1,122 +1,64 @@
-'use client'
-
-import { useState, useEffect } from 'react';
 import HeroSection from '@/components/ui/hero';
-// import TickerTape from '@/components/tickertape_animation';
 import PortfolioGrid from '@/components/portfolio-section';
 import ServicesSection from '@/components/services-section';
 import AboutSection from '@/components/about-section';
 import WhyChooseUsSection from '@/components/testimonials-section';
 import ContactSection from '@/components/contact-section';
 import Footer from '@/components/footer';
-// import FeaturedWork from '@/components/featured-work';
 import Header from '@/components/navbar';
+import { listImageFiles } from '@/lib/image-files';
+import { prepareHeroImage } from '@/lib/hero-assets.mjs';
 
+// Read uploads on each request so admin changes appear immediately.
+export const dynamic = 'force-dynamic';
 
-export default function HomePage() {
-  const [webImages, setWebImages] = useState<string[]>([]);
-  const [mobileImages, setMobileImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Epitome Creatives",
+  "image": "https://www.epitomecreatives.com/logo.png",
+  "url": "https://www.epitomecreatives.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "London",
+    "addressCountry": "GB"
+  },
+  "description": "Epitome Creatives is a UK-based product photography studio specialising in clean, minimalist, high-converting visuals for e-commerce brands. We work with skincare, lifestyle, accessories, and wellness brands to deliver standout digital content.",
+  "priceRange": "££",
+  "areaServed": {
+    "@type": "Country",
+    "name": "United Kingdom"
+  },
+  "sameAs": [
+    "https://www.instagram.com/epitome.creatives"
+  ]
+};
 
-
-  
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.innerHTML = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "Epitome Creatives",
-      "image": "https://www.epitomecreatives.com/logo.png",
-      "url": "https://www.epitomecreatives.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "London",
-        "addressCountry": "GB"
-      },
-      "description": "Epitome Creatives is a UK-based product photography studio specialising in clean, minimalist, high-converting visuals for e-commerce brands. We work with skincare, lifestyle, accessories, and wellness brands to deliver standout digital content.",
-      "priceRange": "££",
-      "areaServed": {
-        "@type": "Country",
-        "name": "United Kingdom"
-      },
-      "sameAs": [
-        "https://www.instagram.com/epitome.creatives"
-      ]
-    });
-    document.head.appendChild(script);
-  }, []);
-
-  
-
-  // 1️⃣ Fetch web and mobile images from separate endpoints
-  useEffect(() => {
-    (async () => {
-      try {
-        const [webRes, mobileRes] = await Promise.all([
-          fetch('/api/images/web'),
-          fetch('/api/images/mobile')
-        ]);
-
-        if (!webRes.ok) throw new Error(`Web images status ${webRes.status}`);
-        if (!mobileRes.ok) throw new Error(`Mobile images status ${mobileRes.status}`);
-
-        const webData: string[] = await webRes.json();
-        const mobileData: string[] = await mobileRes.json();
-
-        if (Array.isArray(webData) && webData.length > 0) {
-          const urls = webData.map((f) => `/uploads/web/${f}`);
-          setWebImages(urls);
-          // Preload first web image for faster display
-          const link = document.createElement('link');
-          link.rel = 'preload';
-          link.as = 'image';
-          link.href = urls[0];
-          document.head.appendChild(link);
-        }
-        if (Array.isArray(mobileData) && mobileData.length > 0) {
-          const urls = mobileData.map((f) => `/uploads/mobile/${f}`);
-          setMobileImages(urls);
-          // Preload first mobile image for faster display
-          const link = document.createElement('link');
-          link.rel = 'preload';
-          link.as = 'image';
-          link.href = urls[0];
-          document.head.appendChild(link);
-        }
-      } catch (err) {
-        console.error('Failed to load images', err);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  if (loading) {
-    return <p className="p-6 text-center">Loading…</p>;
-  }
-
-  if (webImages.length === 0 && mobileImages.length === 0) {
-    return <p className="p-6 text-center">No images found.</p>;
-  }
-
-
+export default async function HomePage() {
+  const [webFiles, mobileFiles] = await Promise.all([
+    listImageFiles('public/uploads/web'),
+    listImageFiles('public/uploads/mobile'),
+  ]);
+  const [webImages, mobileImages] = await Promise.all([
+    Promise.all(webFiles.map((file) => prepareHeroImage('web', file))),
+    Promise.all(mobileFiles.map((file) => prepareHeroImage('mobile', file))),
+  ]);
+  const firstDesktop = webImages[0] || mobileImages[0];
+  const firstMobile = mobileImages[0] || webImages[0];
 
   return (
     <>
+      {firstMobile && <link rel="preload" as="image" href={firstMobile.src} imageSrcSet={firstMobile.srcSet || undefined} imageSizes="100vw" media="(max-width: 767px)" fetchPriority="high" />}
+      {firstDesktop && <link rel="preload" as="image" href={firstDesktop.src} imageSrcSet={firstDesktop.srcSet || undefined} imageSizes="100vw" media="(min-width: 768px)" fetchPriority="high" />}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <Header />
       <HeroSection webImages={webImages} mobileImages={mobileImages} />
-      {/* <TickerTape /> */}
       <ServicesSection />
       <PortfolioGrid />
-      {/* <FeaturedWork /> */}
       <AboutSection />
       <WhyChooseUsSection />
       <ContactSection />
       <Footer />
-      
-
-
 
     </>
   );
