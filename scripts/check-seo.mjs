@@ -32,9 +32,14 @@ for (const path of pages) {
   if (path === '/' || path === '/services') assert.ok(html.includes('home-based') || html.includes('Home-based'));
   console.log(`PASS ${path}: metadata, headings, indexing, structured data`);
 }
-const login = await (await fetch(new URL('/login',base))).text();
-assert.ok(login.includes('content="noindex, nofollow"'), 'Login must remain noindex');
-assert.ok(!login.includes('name="googlebot" content="index'), 'No conflicting Googlebot directive on login');
+for (const path of ['/admin', '/login', '/api/portfolio', '/api/login', '/api/upload/web', '/api/admin/images', '/api/images']) {
+  const response = await fetch(new URL(path, base));
+  assert.equal(response.status, 404, `Removed route: ${path}`);
+}
+for (const path of ['/api/portfolio', '/api/login', '/api/upload', '/api/upload/web', '/api/upload/mobile', '/api/admin/images']) {
+  const response = await fetch(new URL(path, base), { method: 'POST' });
+  assert.equal(response.status, 404, `Removed mutation route: ${path}`);
+}
 const redirect = await fetch(new URL('/products',base),{redirect:'manual'});
 assert.equal(redirect.status,308);
 assert.equal(redirect.headers.get('location'),'/portfolio');
@@ -50,4 +55,4 @@ console.log(`PASS sitemap: all ${pages.length} public pages, ${files.length} pho
 const preview = await fetch(new URL('/social-preview.jpg',base));
 assert.equal(preview.status,200);
 assert.ok(preview.headers.get('content-type')?.includes('image/jpeg'));
-console.log('PASS private-page directives, legacy redirect, real 404 and social preview');
+console.log('PASS removed admin/API routes, legacy redirect, real 404 and social preview');

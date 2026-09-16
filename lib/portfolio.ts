@@ -1,8 +1,4 @@
-import {
-  listPortfolioMediaFiles,
-  portfolioMediaKind,
-} from "./portfolio-media-files.mjs";
-import { preparePortfolioVideo } from "./portfolio-video.mjs";
+import media from "@/.generated/portfolio.json";
 
 export type PortfolioCategory =
   | "Beauty & skincare"
@@ -392,20 +388,14 @@ const descriptions: Record<string, [string, string, PortfolioCategory]> = {
   ],
 };
 export async function getPortfolioMedia(): Promise<PortfolioMedia[]> {
-  const files = await listPortfolioMediaFiles();
-  return Promise.all(
-    files.map(async (filename, index) => {
-      const kind = portfolioMediaKind(filename) === "video" ? "video" : "image";
-      const [title, alt, category] = descriptions[filename] || [
-        `${kind === "video" ? "Product film" : "Product study"} ${index + 1}`,
-        `${kind === "video" ? "Product video" : "Creative product photography"} by Epitome Creatives`,
-        kind === "video" ? "Video & motion" : "More work",
-      ];
-      const asset =
-        kind === "video"
-          ? await preparePortfolioVideo(filename)
-          : { src: `/portfolio/${encodeURIComponent(filename)}` };
-      return { filename, title, alt, category, kind, ...asset };
-    }),
-  );
+  return media.map((asset, index) => {
+    const { filename } = asset;
+    const kind = asset.kind === "video" ? "video" : "image";
+    const [title, alt, category] = descriptions[filename] || [
+      `${kind === "video" ? "Product film" : "Product study"} ${index + 1}`,
+      `${kind === "video" ? "Product video" : "Creative product photography"} by Epitome Creatives`,
+      kind === "video" ? "Video & motion" : "More work",
+    ];
+    return { ...asset, kind, title, alt, category };
+  });
 }

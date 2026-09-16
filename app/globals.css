@@ -130,22 +130,6 @@ section[id] {
   -webkit-background-clip: text;
   color: transparent;
 }
-/* Retain compatible utility names used by the administration tools. */
-.brand-page-background,
-.brand-section-a-soft {
-  background: var(--paper);
-}
-.brand-section-a,
-.brand-section-b {
-  background: #eeede7;
-}
-.brand-soft-panel {
-  background: #fff;
-  border: 1px solid var(--line);
-}
-.brand-gradient-line {
-  background: var(--line);
-}
 .brand-gradient-button {
   background: var(--ink);
   color: #fff;

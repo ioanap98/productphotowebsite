@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Keep native image/video tools outside the server bundle.
-  serverExternalPackages: ["sharp", "ffmpeg-static"],
   // Turbopack configuration for Turbopack bundler
   turbopack: {},
   async headers() {

@@ -8,13 +8,13 @@
 - Organization, WebSite, WebPage, CollectionPage, Service and breadcrumb JSON-LD. No invented reviews, ratings, prices, street address or London location. Home-based studio wording follows the owner's confirmation; the existing UK positioning is retained.
 - Image sitemap includes all 57 current portfolio photographs. Image paths are URL-encoded; hidden files and videos are excluded from image entries. It regenerates on build, so rebuild/redeploy after media changes.
 - Sitemap includes only home, services, portfolio and privacy. No fake modification dates refreshed on every build.
-- Public pages allow indexing and large image previews. Login/admin retain noindex; robots permits crawling these pages so Google can read the directive. Authentication still protects admin. API routes remain disallowed.
+- Public pages allow indexing and large image previews. Admin, login and API routes have now been removed and return 404.
 - Existing responsive pre-generated hero WebPs, high-priority first-image preloads, gallery lazy loading and video posters are retained.
 - Optional Google verification meta tag reads `GOOGLE_SITE_VERIFICATION`. Only set this to the actual Search Console HTML verification token; no placeholder token is output.
 
 ## Validation
 
-`npm run lint`, `npm test`, and `npm run build` pass. With a production server running, `node scripts/check-seo.mjs http://localhost:3100` checks public HTTP status, unique branded titles/descriptions, canonicals, one H1 per page, indexability, parseable JSON-LD, image sitemap coverage, private-page noindex, the legacy 308 redirect, real 404 responses and the social preview asset.
+`npm run lint`, `npm test`, and `npm run build` pass. With a production server running, `node scripts/check-seo.mjs http://localhost:3100` checks public HTTP status, unique branded titles/descriptions, canonicals, one H1 per page, indexability, parseable JSON-LD, image sitemap coverage, removed admin/API routes, the legacy 308 redirect, real 404 responses and the social preview asset.
 
 Services page inspected at desktop and 375 px mobile widths. Mobile homepage inspected: no horizontal overflow, loaded hero, usable enquiry link. Native FAQ disclosures work. These are local checks, not a measured field Core Web Vitals score or certification by Google's Rich Results Test.
 
@@ -39,3 +39,7 @@ References:
 - https://developers.google.com/search/docs/fundamentals/seo-starter-guide
 - https://developers.google.com/search/docs/appearance/structured-data/organization
 - https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps
+
+## Deployment architecture update
+
+All public routes are now prerendered, and media manifests are generated before build. Runtime pages do not scan folders or invoke Sharp/FFmpeg. The previous admin/upload APIs have been removed. Rebuild and redeploy after changing media. The earlier live HTTP 500 observation remains historical until the new deployment is verified.

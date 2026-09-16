@@ -45,3 +45,6 @@ next-env.d.ts
 
 # Browser-compatible copies of original portfolio videos
 /public/generated/portfolio-video/
+
+# Build-time media manifests
+/.generated/

@@ -7,7 +7,7 @@ import Footer from "@/components/footer";
 import PortfolioGallery from "@/components/portfolio-gallery";
 import { getPortfolioMedia } from "@/lib/portfolio";
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 export const metadata: Metadata = pageMetadata(
   "Product Photography & Video Portfolio",
   "Explore beauty, skincare, wellness and lifestyle product photography, stop-motion and video by Epitome Creatives, an independent UK studio.",

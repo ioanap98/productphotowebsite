@@ -11,11 +11,10 @@ import Footer from "@/components/footer";
 import FeaturedWork from "@/components/featured-work";
 import ProcessSection from "@/components/process-section";
 import Header from "@/components/navbar";
-import { listImageFiles } from "@/lib/image-files";
-import { prepareHeroImage } from "@/lib/hero-assets.mjs";
+import hero from "@/.generated/hero.json";
 
-// Read uploads on each request so admin changes appear immediately.
-export const dynamic = "force-dynamic";
+// Media is prepared before build; the public page needs no filesystem or upload function.
+export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   ...pageMetadata("Product Photography & Video UK", siteDescription, "/"),
@@ -39,14 +38,7 @@ const structuredData = {
 };
 
 export default async function HomePage() {
-  const [webFiles, mobileFiles] = await Promise.all([
-    listImageFiles("public/uploads/web"),
-    listImageFiles("public/uploads/mobile"),
-  ]);
-  const [webImages, mobileImages] = await Promise.all([
-    Promise.all(webFiles.map((file) => prepareHeroImage("web", file))),
-    Promise.all(mobileFiles.map((file) => prepareHeroImage("mobile", file))),
-  ]);
+  const { web: webImages, mobile: mobileImages } = hero;
   const firstDesktop = webImages[0] || mobileImages[0];
   const firstMobile = mobileImages[0] || webImages[0];
 

@@ -1,16 +1,16 @@
 # Portfolio media
 
-The homepage and `/portfolio` use every supported file directly inside `public/portfolio`, with no curated filename limit. Current library: 70 images and two videos. Existing originals, including separate copies, are preserved.
+The homepage and `/portfolio` include every supported file directly inside `public/portfolio`. Originals are preserved.
 
-- Images: JPG/JPEG, PNG, WebP, AVIF, GIF, SVG.
-- Videos: MP4, MOV, M4V, WebM.
-- Extensions are case-insensitive; hidden files and directories are excluded.
-- Add originals to this folder and refresh during development. Deploy added files with the next build.
-- Descriptions and subject categories live in `lib/portfolio.ts`. New files without descriptions still appear under More work; videos appear under Video & motion.
-- Both galleries use lazy image loading. Videos show a lightweight poster and only create a player when opened; closing it stops playback.
+- Images: JPG/JPEG, PNG, WebP, AVIF, GIF and SVG.
+- Videos: MP4, MOV, M4V and WebM.
+- Hidden files and directories are excluded; extensions are case-insensitive.
+- Add originals to the folder, then restart `npm run dev` or rebuild and redeploy. Media is discovered before startup/build, not while serving a request.
+- Descriptions and categories live in `lib/portfolio.ts`. Uncatalogued images still appear under More work; videos appear under Video & motion.
+- Galleries lazy-load images. Videos use poster thumbnails and load the player when opened.
 
-`npm run dev` and `npm run build` prepare compatible H.264 MP4 copies and posters in the ignored `public/generated/portfolio-video` folder. Originals are never modified. Content-versioned output is reused until a source changes. New videos encountered while running are prepared on demand.
+`npm run dev` and `npm run build` prepare responsive hero images, H.264 portfolio videos and posters, plus JSON manifests in `.generated/`. All generated assets and manifests are ignored by Git and regenerated before compilation. Use the npm scripts rather than invoking `next build` directly.
 
-Video preparation uses the platform-specific `ffmpeg-static` dependency. Install dependencies normally on the target build platform. Generated files must be included with the built site's public assets.
+FFmpeg is a development/build dependency only. Runtime page code imports small JSON manifests, with no imports of the image/video preparation helpers or filesystem scanning. Every public page is prerendered. Generated files in `public/generated` must be deployed as static assets.
 
-Validation: all 72 entries checked against server-rendered homepage and portfolio output; both MP4 files support HTTP byte ranges; browser decoding checked for both videos, first video playback verified, player teardown verified. Production build, type checking, lint and six tests pass.
+The admin, login, upload and image-management API routes have been removed. The enquiry form continues to submit directly to Web3Forms.
