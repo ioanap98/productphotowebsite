@@ -1,273 +1,295 @@
-'use client'
-
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import {  Mail, Instagram, Copy, Check } from 'lucide-react'
-import { motion } from 'framer-motion'
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import { submitEnquiry } from "@/lib/enquiry.mjs";
+import { ArrowUpRight, Check, Copy } from "lucide-react";
 
 export default function ContactSection() {
-  const [result, setResult] = useState<string | null>(null)
-  const [submitting, setSubmitting] = useState(false)
-  const [emailCopied, setEmailCopied] = useState(false)
+  const [result, setResult] = useState<{
+    kind: "success" | "error";
+    message: string;
+  } | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText('hello@epitomecreatives.com')
-    setEmailCopied(true)
-    setTimeout(() => setEmailCopied(false), 2000)
-  }
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setSubmitting(true)
-    setResult('Sending…')
-
-    // Gather all the fields from the form
-    const form = e.currentTarget
-    const formData = new FormData(form)
-    // Your Web3Forms access key
-    formData.append('access_key', '66f9c46a-07d4-4e4e-b2e4-1e8da31cf793')
-
+  const copyEmail = async () => {
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData,
-      })
-      const json = await res.json()
-
-      if (json.success) {
-        setResult('Thank you! Your message has been sent.')
-        form.reset()
-      } else {
-        console.error('Web3Forms error', json)
-        setResult('Oops! Something went wrong. Please try again.')
-      }
-    } catch (err) {
-      console.error('Fetch error', err)
-      setResult('Network error. Please try again later.')
-    } finally {
-      setSubmitting(false)
+      await navigator.clipboard.writeText("hello@epitomecreatives.com");
+      setEmailCopied(true);
+      window.setTimeout(() => setEmailCopied(false), 2000);
+    } catch {
+      setEmailCopied(false);
     }
-  }
-
-  const steps = [
-    {
-      number: 1,
-      title: 'Inquiry & Brief',
-      description:
-        'Share details about your product, brand, and goals - via the form, email, or a short call.',
-    },
-    {
-      number: 2,
-      title: 'Custom Proposal',
-      description:
-        'You’ll receive a clear proposal outlining deliverables, timeline, and pricing.',
-    },
-    {
-      number: 3,
-      title: 'Shoot & Edit',
-      description:
-        'Once confirmed, we plan and execute the shoot, followed by careful editing and retouching.',
-    },
-    {
-      number: 4,
-      title: 'Delivery',
-      description:
-        'Final images are delivered via a secure online gallery, ready for web and social use.',
-    },
-  ]
-
+  };
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (submitting) return;
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    if (formData.get("botcheck")) return;
+    setSubmitting(true);
+    setResult(null);
+    try {
+      await submitEnquiry(formData);
+      setResult({
+        kind: "success",
+        message:
+          "Thank you — your enquiry has been sent. I’ll be in touch to discuss your project.",
+      });
+      form.reset();
+    } catch {
+      setResult({
+        kind: "error",
+        message:
+          "Your enquiry could not be sent. Your details are still here — please try again, or email hello@epitomecreatives.com.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
-    <section id="contact" className="brand-section-b py-24">
-      <div className="container mx-auto px-6">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-light mb-4">
-            Ready to Elevate Your Product Visuals?
+    <section id="contact" className="section-space">
+      <div className="site-wrap grid gap-12 lg:grid-cols-[.85fr_1.15fr] lg:gap-24">
+        <div>
+          <p className="eyebrow mb-4 text-[#66675f]">06 / Your next project</p>
+          <h2 className="section-title">
+            Let’s make
+            <br />
+            something
+            <br />
+            worth noticing.
           </h2>
-          {/* <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Share a few details about your product and brand. We’ll come back to you with a clear proposal and next steps.
-          </p> */}
-          <motion.div
-            className="brand-gradient-line mx-auto mt-6 h-px w-24"
-            initial={{ width: 0 }}
-            whileInView={{ width: 96 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          />
-        </motion.div>
-
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
-          {/* Form */}
-          <motion.div
-            className="brand-soft-panel rounded-3xl p-8 md:p-10"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h3 className="text-2xl font-light mb-4">
-              Start Your Project
-            </h3>
-            <p className="text-gray-600 mb-8">
-              Share a bit about your product and what you’re looking for, and I’ll get back to you with a tailored approach for your brand.
+          <p className="copy mt-6 max-w-sm">
+            Tell us what you’re creating. We’ll shape a shoot around your brand,
+            your goals and the content you need.
+          </p>
+          <p className="copy mt-4 max-w-sm text-sm">
+            Every project is quoted individually, with creative direction,
+            deliverables and intended usage agreed before the shoot.
+          </p>
+          <div className="mt-10 border-t border-[#d8d7d0] pt-6">
+            <p className="eyebrow mb-3 text-[#66675f]">
+              Prefer a conversation by email?
             </p>
-
-            <motion.form
-              onSubmit={handleSubmit}
-              className="space-y-6"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  name="name"
-                  placeholder="Your Name *"
-                  required
-                  className="border-white/70 bg-white/80"
-                />
-                <Input
-                  name="company"
-                  placeholder="Company/Brand Name"
-                  className="border-white/70 bg-white/80"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address *"
-                  required
-                  className="border-white/70 bg-white/80"
-                />
-                <Input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number"
-                  className="border-white/70 bg-white/80"
-                />
-              </div>
-
-              <div>
-                <select
-                  name="projectType"
-                  required
-                  className="w-full rounded-md border border-white/70 bg-white/80 p-3 focus:border-purple-300 focus:outline-none focus:ring-4 focus:ring-fuchsia-100"
-                >
-                  <option value="">Select service *</option>
-                  <option value="product-photography">
-                    Product Photography
-                  </option>
-                  <option value="lifestyle">
-                    Lifestyle Shots
-                  </option>
-                  <option value="product-videos">
-                    Video & Motion Content
-                  </option>
-                  <option value="complete-package">
-                    Complete Package (Photos + Video)
-                  </option>
-                  <option value="not-sure">
-                    Not sure - need consultation
-                  </option>
-                </select>
-              </div>
-
-              <Textarea
-                name="projectDetails"
-                placeholder="Describe your products, brand style..."
-                required
-                className="border-white/70 bg-white/80"
-                rows={4}
-              />
-
-              <Button
-                type="submit"
-                disabled={submitting}
-                className="brand-gradient-button w-full border-0 text-white"
-                size="lg"
+            <div className="flex items-center gap-2">
+              <a
+                href="mailto:hello@epitomecreatives.com"
+                className="break-all text-sm underline underline-offset-4"
               >
-                {submitting ? 'Sending…' : 'Request a Quote'}
-              </Button>
-
-              {result && (
-                <p
-                  className={`mt-4 text-center ${
-                    result.includes('Thank')
-                      ? 'text-green-600'
-                      : 'text-red-600'
-                  }`}
-                >
-                  {result}
-                </p>
-              )}
-            </motion.form>
-          </motion.div>
-
-          {/* Steps & Contact Info */}
-          <motion.div
-            className="brand-soft-panel rounded-3xl p-8 md:p-10"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h3 className="text-2xl font-light mb-8">How It Works</h3>
-            <div className="space-y-6 mb-12">
-              {steps.map((step) => (
-                <div key={step.number} className="flex items-start space-x-4">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 text-white shadow-lg shadow-fuchsia-200/70">
-                    {step.number}
-                  </div>
-                  <div>
-                    <div className="font-medium">{step.title}</div>
-                    <div className="text-gray-600">{step.description}</div>
-                  </div>
-                </div>
-              ))}
+                hello@epitomecreatives.com
+              </a>
+              <button
+                type="button"
+                className="grid size-11 shrink-0 place-items-center"
+                aria-label={emailCopied ? "Email copied" : "Copy email address"}
+                onClick={() => void copyEmail()}
+              >
+                {emailCopied ? <Check size={16} /> : <Copy size={16} />}
+              </button>
             </div>
-
-            <h4 className="text-lg font-medium mb-4">Get In Touch</h4>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3 group">
-                <Mail className="h-5 w-5 text-purple-700" />
-                <span>hello@epitomecreatives.com</span>
-                <button
-                  onClick={copyEmail}
-                  className="ml-2 rounded p-1.5 transition-all hover:bg-gradient-to-r hover:from-purple-100 hover:via-pink-100 hover:to-blue-100"
-                  title="Copy email"
-                >
-                  {emailCopied ? (
-                    <Check className="w-4 h-4 text-green-600" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-gray-600" />
-                  )}
-                </button>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Instagram className="h-5 w-5 text-pink-600" />
-                <a
-                  href="https://www.instagram.com/epitome.creatives/"
-                  className="transition-colors hover:text-purple-700 hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  @epitome.creatives
-                </a>
-              </div>
-              
-            </div>
-          </motion.div>
+            <span role="status" className="sr-only">
+              {emailCopied ? "Email address copied" : ""}
+            </span>
+            <a
+              href="https://www.instagram.com/epitome.creatives/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link mt-3"
+            >
+              Instagram <ArrowUpRight size={15} aria-hidden="true" />
+            </a>
+          </div>
         </div>
+        <form
+          onSubmit={handleSubmit}
+          className="border border-[#d8d7d0] bg-white/70 p-5 sm:p-8"
+          aria-label="Shoot enquiry"
+          aria-busy={submitting}
+        >
+          <h3 className="text-2xl tracking-[-.03em]">Enquire About a Shoot</h3>
+          <p className="mb-7 mt-3 text-xs leading-6 text-[#66675f]">
+            A few details to get started. Fields marked * are required.
+          </p>
+          <input
+            type="text"
+            name="botcheck"
+            tabIndex={-1}
+            autoComplete="off"
+            className="hidden"
+            aria-hidden="true"
+          />
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label className="form-label" htmlFor="enquiry-name">
+                Your name *
+              </label>
+              <input
+                id="enquiry-name"
+                name="name"
+                autoComplete="name"
+                required
+                maxLength={120}
+                className="form-field"
+              />
+            </div>
+            <div>
+              <label className="form-label" htmlFor="enquiry-company">
+                Brand name
+              </label>
+              <input
+                id="enquiry-company"
+                name="company"
+                autoComplete="organization"
+                maxLength={160}
+                className="form-field"
+              />
+            </div>
+            <div>
+              <label className="form-label" htmlFor="enquiry-email">
+                Email address *
+              </label>
+              <input
+                id="enquiry-email"
+                type="email"
+                name="email"
+                autoComplete="email"
+                required
+                maxLength={254}
+                className="form-field"
+              />
+            </div>
+            <div>
+              <label className="form-label" htmlFor="enquiry-website">
+                Website or Instagram
+              </label>
+              <input
+                id="enquiry-website"
+                name="website"
+                placeholder="Website or @yourbrand"
+                maxLength={300}
+                className="form-field"
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <label className="form-label" htmlFor="enquiry-service">
+                What would you like to create? *
+              </label>
+              <select
+                id="enquiry-service"
+                name="projectType"
+                required
+                className="form-field"
+                defaultValue=""
+              >
+                <option value="">Choose a service</option>
+                <option value="product-photography">Product photography</option>
+                <option value="lifestyle">Lifestyle photography</option>
+                <option value="product-videos">Short-form video</option>
+                <option value="stop-motion">Stop-motion</option>
+                <option value="complete-package">
+                  Creative campaign — photography & video
+                </option>
+                <option value="not-sure">I’d like some guidance</option>
+              </select>
+            </div>
+            <div className="sm:col-span-2">
+              <label className="form-label" htmlFor="enquiry-details">
+                Tell us about your project *
+              </label>
+              <textarea
+                id="enquiry-details"
+                name="projectDetails"
+                required
+                maxLength={5000}
+                rows={4}
+                className="form-field resize-y"
+                placeholder="Your products, the story you want to tell, and where the content will be used."
+              />
+            </div>
+          </div>
+          <details className="my-6 border-y border-[#d8d7d0] py-4">
+            <summary className="py-1 text-xs leading-6">
+              Budget, timing & deliverables{" "}
+              <span className="text-[#66675f]">(optional)</span>
+            </summary>
+            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+              <div>
+                <label htmlFor="enquiry-budget" className="form-label">
+                  Approximate budget (GBP)
+                </label>
+                <input
+                  id="enquiry-budget"
+                  name="budget"
+                  className="form-field"
+                  maxLength={100}
+                  placeholder="Your budget or range"
+                />
+              </div>
+              <div>
+                <label htmlFor="enquiry-date" className="form-label">
+                  Desired delivery date
+                </label>
+                <input
+                  id="enquiry-date"
+                  name="desiredDate"
+                  type="date"
+                  className="form-field min-w-0"
+                />
+              </div>
+              <div>
+                <label htmlFor="enquiry-scope" className="form-label">
+                  Images / videos needed
+                </label>
+                <input
+                  id="enquiry-scope"
+                  name="deliverables"
+                  className="form-field"
+                  maxLength={200}
+                  placeholder="e.g. 8 photos and 2 videos"
+                />
+              </div>
+              <div>
+                <label htmlFor="enquiry-phone" className="form-label">
+                  Phone number
+                </label>
+                <input
+                  id="enquiry-phone"
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  className="form-field"
+                  maxLength={40}
+                />
+              </div>
+            </div>
+          </details>
+          <p className="mb-5 text-[11px] leading-5 text-[#66675f]">
+            Your details are used to respond to your enquiry. Enquiries are
+            processed through Web3Forms.{" "}
+            <Link href="/privacy" className="underline underline-offset-2">
+              Privacy information
+            </Link>
+            .
+          </p>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="studio-button w-full disabled:cursor-wait disabled:opacity-60"
+          >
+            {submitting ? "Sending your enquiry…" : "Send Enquiry"}
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </button>
+          <div aria-live="polite" aria-atomic="true">
+            {result && (
+              <p
+                className={`mt-5 border-l-2 pl-4 text-sm leading-6 ${result.kind === "success" ? "border-green-700 text-green-800" : "border-red-700 text-red-800"}`}
+              >
+                {result.message}
+              </p>
+            )}
+          </div>
+        </form>
       </div>
     </section>
-  )
+  );
 }

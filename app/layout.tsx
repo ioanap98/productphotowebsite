@@ -1,78 +1,45 @@
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/next"
-
+import { pageMetadata, siteDescription, siteName, siteUrl } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
-
-export const metadata = {
-  title: 'Product Photography for Small Brands | Epitome Creatives UK',
-  description:
-    'Professional product photography for e-commerce and small brands. Clean, high-converting visuals for skincare, supplements, fashion, and lifestyle products. Based in the UK.',
-  keywords: [
-    'product photography UK',
-    'e-commerce photography',
-    'small brand photography',
-    'product photographer London',
-    'skincare photography',
-    'product photos for online stores',
-    'lifestyle product photography',
-    'Epitome Creatives'
-  ],
-  metadataBase: new URL('https://www.epitomecreatives.com'),
-  authors: [{ name: 'Epitome Creatives', url: 'https://www.epitomecreatives.com' }],
-  creator: 'Epitome Creatives',
-  openGraph: {
-    title: 'Product Photography for Small Brands | Epitome Creatives',
-    description:
-      'Professional product photography for e-commerce, social media, and product launches. Clean, conversion-focused visuals for small brands across the UK.',
-    url: 'https://www.epitomecreatives.com',
-    siteName: 'Epitome Creatives',
-    images: [
-      {
-        url: 'https://www.epitomecreatives.com/logo.png', 
-        width: 1200,
-        height: 630,
-        alt: 'Epitome Creatives - Product Photography',
-      },
-    ],
-    locale: 'en_GB',
-    type: 'website',
+export const metadata: Metadata = {
+  ...pageMetadata("Product Photography & Video UK", siteDescription, "/"),
+  title: {
+    default: "Product Photography & Video UK | Epitome Creatives",
+    template: "%s | Epitome Creatives",
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Product Photography for Small Brands | Epitome Creatives',
-    description:
-      'Clean, professional product photos that drive sales. Serving e-commerce brands and startups across the UK.',
-    images: ['https://www.epitomecreatives.com/logo.png'],
+  // Each public route sets its own canonical; private routes must not inherit one.
+  alternates: undefined,
+  metadataBase: new URL(siteUrl),
+  authors: [{ name: siteName, url: siteUrl }],
+  creator: siteName,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
-  icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
-  },
-  category: 'photography',
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
+  icons: { icon: "/Logo.png", shortcut: "/Logo.png", apple: "/Logo.png" },
+  category: "photography",
 };
-
-
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} brand-page-background text-black min-h-screen`}>
-      {/* screenshot toggle: client component */}
-   
-      <main>
+    <html lang="en-GB">
+      <body className={`${inter.variable} min-h-screen`}>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
         {children}
-      </main>
-      <Analytics />
-        
+        <Analytics />
       </body>
     </html>
   );

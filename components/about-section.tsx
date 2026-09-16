@@ -1,207 +1,56 @@
-"use client"
-
-import Image from "next/image"
-import { motion } from "framer-motion"
-
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
-    },
-  },
-}
-
-const imageVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.8,
-      ease: [0.42, 0, 1, 1] as [number, number, number, number],
-    },
-  },
-}
-
-const textVariants = {
-  hidden: { opacity: 0, x: 50 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.42, 0, 1, 1] as [number, number, number, number],
-    },
-  },
-}
-
-// const statsVariants = {
-//   hidden: { opacity: 0, y: 30 },
-//   visible: {
-//     opacity: 1,
-//     y: 0,
-//     transition: {
-//       duration: 0.6,
-//       ease: [0.42, 0, 1, 1] as [number, number, number, number],
-//     },
-//   },
-// }
-
-// function CountUpAnimation({ targetNumber, label, delay = 0 }: { targetNumber: string; label: string; delay?: number }) {
-//   const [count, setCount] = useState(0)
-//   const [isVisible, setIsVisible] = useState(false)
-
-//   // Extract numeric value from string (e.g., "100+" -> 100)
-//   const numericTarget = Number.parseInt(targetNumber.replace(/\D/g, "")) || 0
-//   const suffix = targetNumber.replace(/\d/g, "") // Extract non-numeric characters like "+"
-
-//   useEffect(() => {
-//     if (!isVisible) return
-
-//     const duration = 2000 // 2 seconds
-//     const steps = 60 // 60 steps for smooth animation
-//     const increment = numericTarget / steps
-//     const intervalTime = duration / steps
-
-//     let currentCount = 0
-//     const timer = setInterval(() => {
-//       currentCount += increment
-//       if (currentCount >= numericTarget) {
-//         setCount(numericTarget)
-//         clearInterval(timer)
-//       } else {
-//         setCount(Math.floor(currentCount))
-//       }
-//     }, intervalTime)
-
-//     return () => clearInterval(timer)
-//   }, [isVisible, numericTarget])
-
-//   return (
-//     <motion.div
-//       className="group"
-//       variants={statsVariants}
-//       initial="hidden"
-//       whileInView="visible"
-//       onViewportEnter={() => setIsVisible(true)}
-//       viewport={{ once: true }}
-//       transition={{ delay }}
-//     >
-//       <motion.div
-//         className="text-3xl font-light mb-2 relative overflow-hidden"
-//         whileHover={{
-//           scale: 1.2,
-//           color: "#059669",
-//           transition: { duration: 0.3 },
-//         }}
-//       >
-//         <span>
-//           {count}
-//           {suffix}
-//         </span>
-//         <motion.div
-//           className="absolute bottom-0 left-0 h-0.5 bg-green-600"
-//           initial={{ width: "0%" }}
-//           animate={{ width: isVisible ? "100%" : "0%" }}
-//           transition={{ duration: 2, delay: delay + 0.2 }}
-//         />
-//       </motion.div>
-//       <div className="text-gray-600">{label}</div>
-//     </motion.div>
-//   )
-// }
-
+import { getImageProps } from "next/image";
 export default function AboutSection() {
+  const { props: poster } = getImageProps({
+    src: "/portfolio/0A.png",
+    alt: "",
+    width: 320,
+    height: 240,
+  });
   return (
-    <section id="about" className="brand-section-b py-24">
-      <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+    <section id="about" className="section-space">
+      <div className="site-wrap grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
+        <div className="relative bg-[#e9e6e0]">
+          <video
+            controls
+            playsInline
+            preload="none"
+            poster={poster.src}
+            aria-label="Behind the scenes at Epitome Creatives"
+            className="aspect-[4/3] w-full object-cover"
           >
-            <h2 className="text-4xl md:text-5xl font-light mb-4">About Epitome Creatives</h2>
-            <motion.div
-              className="brand-gradient-line mx-auto h-px w-24"
-              initial={{ width: 0 }}
-              whileInView={{ width: 96 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            />
-          </motion.div>
-
-          <motion.div
-            className="grid lg:grid-cols-2 gap-16 items-center"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.div className="space-y-8 flex flex-col items-start" variants={imageVariants}>
-              <motion.div
-                className="relative max-w-md overflow-hidden"
-              >
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="w-full h-auto object-cover object-center"
-                  style={{ aspectRatio: "4/3" }}
-                >
-                  <source src="/IMG_4867.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </motion.div>
-            </motion.div>
-
-            <motion.div variants={textVariants}>
-              <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
-                {[
-                  "After more than 10 years of passion for photography and a background in engineering, I decided to turn that passion into something tangible - Epitome Creatives, a studio dedicated to thoughtful, clean product imagery.",
-                  "I focus on creating visuals for e-commerce and modern brands that value simplicity, clarity, and strong visual identity.",
-                  "Every project is approached with attention to detail, from lighting to composition, ensuring your product is presented in a way that feels natural, refined, and aligned with your brand.",
-                ].map((text, index) => (
-                  <motion.p
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                  >
-                    {text}
-                  </motion.p>
-                ))}
-              </div>
-
-              {/* <motion.div
-                className="mt-8 pt-8 border-t border-gray-200"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <div className="grid grid-cols-3 gap-8 text-center">
-                  {[
-                    { number: "100+", label: "Projects Completed" },
-                    { number: "5", label: "Years Experience" },
-                    { number: "50+", label: "Happy Clients" },
-                  ].map((stat, index) => (
-                    <CountUpAnimation key={index} targetNumber={stat.number} label={stat.label} delay={index * 0.1} />
-                  ))}
-                </div>
-              </motion.div> */}
-            </motion.div>
-          </motion.div>
+            <source src="/IMG_4867.mp4" type="video/mp4" />
+            <p>
+              <a href="/IMG_4867.mp4">Watch the studio video</a>
+            </p>
+          </video>
+          <p className="px-4 py-3 text-xs text-[#66675f]">
+            Behind the scenes · A closer look at the studio
+          </p>
+        </div>
+        <div>
+          <p className="eyebrow mb-4 text-[#66675f]">04 / The studio</p>
+          <h2 className="section-title">
+            An eye for detail.
+            <br />A feel for your brand.
+          </h2>
+          <p className="copy mt-6">
+            Epitome Creatives is an independent, home-based UK studio creating product
+            photography and content for beauty, wellness and lifestyle brands.
+          </p>
+          <p className="copy mt-4">
+            Built on more than ten years of passion for photography and a
+            background in engineering, the studio brings a precise, thoughtful
+            approach to light, texture and composition.
+          </p>
+          <p className="copy mt-4">
+            Every project starts with your product and a clear visual direction.
+            The aim is a cohesive collection that feels unmistakably yours.
+          </p>
+          <a href="#contact" className="text-link mt-6">
+            Let’s talk about your brand <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
     </section>
-  )
+  );
 }

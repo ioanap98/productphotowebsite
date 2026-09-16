@@ -1,9 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useState, type SyntheticEvent } from 'react';
-import Image from 'next/image';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type SyntheticEvent,
+} from "react";
+import Image from "next/image";
 
-type ImageBucket = 'web' | 'mobile' | 'portfolio';
+type ImageBucket = "web" | "mobile" | "portfolio";
 type ImageDimensions = { width: number; height: number };
 
 type BucketMeta = {
@@ -15,66 +21,80 @@ type BucketMeta = {
 
 const BUCKET_META: Record<ImageBucket, BucketMeta> = {
   web: {
-    title: 'Web Hero Images',
-    description: 'Images used for desktop and larger screens in your homepage hero slider.',
-    fetchEndpoint: '/api/images/web',
-    imagePrefix: '/uploads/web',
+    title: "Web Hero Images",
+    description:
+      "Images used for desktop and larger screens in your homepage hero slider.",
+    fetchEndpoint: "/api/images/web",
+    imagePrefix: "/uploads/web",
   },
   mobile: {
-    title: 'Mobile Hero Images',
-    description: 'Images used for mobile screens in your homepage hero slider.',
-    fetchEndpoint: '/api/images/mobile',
-    imagePrefix: '/uploads/mobile',
+    title: "Mobile Hero Images",
+    description: "Images used for mobile screens in your homepage hero slider.",
+    fetchEndpoint: "/api/images/mobile",
+    imagePrefix: "/uploads/mobile",
   },
   portfolio: {
-    title: 'Portfolio Images',
-    description: 'Images displayed in your website portfolio gallery.',
-    fetchEndpoint: '/api/images/portfolio',
-    imagePrefix: '/portfolio',
+    title: "Portfolio Images",
+    description: "Images displayed in your website portfolio gallery.",
+    fetchEndpoint: "/api/images/portfolio",
+    imagePrefix: "/portfolio",
   },
 };
 
-export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) {
+export default function ImageManagerClient({
+  bucket,
+}: {
+  bucket: ImageBucket;
+}) {
   const [images, setImages] = useState<string[]>([]);
-  const [imageDimensions, setImageDimensions] = useState<Record<string, ImageDimensions>>({});
+  const [imageDimensions, setImageDimensions] = useState<
+    Record<string, ImageDimensions>
+  >({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [deletingName, setDeletingName] = useState<string | null>(null);
 
   const meta = useMemo(() => BUCKET_META[bucket], [bucket]);
-  const isHeroBucket = bucket === 'web' || bucket === 'mobile';
-  const gridClassName = 'grid grid-cols-3 gap-5';
+  const isHeroBucket = bucket === "web" || bucket === "mobile";
+  const gridClassName = "grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3";
 
-  const loadImages = async () => {
+  const loadImages = useCallback(async () => {
     setLoading(true);
     setError(null);
     setImageDimensions({});
 
     try {
-      const res = await fetch(meta.fetchEndpoint, { credentials: 'same-origin' });
+      const res = await fetch(meta.fetchEndpoint, {
+        credentials: "same-origin",
+      });
       if (!res.ok) throw new Error(`Status ${res.status}`);
 
       const data = await res.json();
       if (Array.isArray(data)) {
-        const normalized = data.filter((item): item is string => typeof item === 'string');
+        const normalized = data.filter(
+          (item): item is string => typeof item === "string",
+        );
         setImages(normalized);
       } else {
-        throw new Error('Invalid image response');
+        throw new Error("Invalid image response");
       }
     } catch (err) {
-      console.error('Failed to load images', err);
-      setError(err instanceof Error ? err.message : 'Failed to load images');
+      console.error("Failed to load images", err);
+      setError(err instanceof Error ? err.message : "Failed to load images");
     } finally {
       setLoading(false);
     }
-  };
+  }, [meta.fetchEndpoint]);
 
   useEffect(() => {
     void loadImages();
-  }, [meta.fetchEndpoint]);
+  }, [loadImages]);
 
-  const handleImageLoad = (filename: string, event: SyntheticEvent<HTMLImageElement>) => {
+  const handleImageLoad = (
+    filename: string,
+    event: SyntheticEvent<HTMLImageElement>,
+  ) => {
     const image = event.currentTarget;
     const width = image.naturalWidth;
     const height = image.naturalHeight;
@@ -95,7 +115,9 @@ export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) 
   };
 
   const handleDelete = async (filename: string) => {
-    const confirmed = window.confirm(`Delete ${filename}? This cannot be undone.`);
+    const confirmed = window.confirm(
+      `Delete ${filename}? This cannot be undone.`,
+    );
     if (!confirmed) return;
 
     setDeletingName(filename);
@@ -103,16 +125,16 @@ export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) 
     setStatus(null);
 
     try {
-      const res = await fetch('/api/admin/images', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/admin/images", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bucket, filename }),
-        credentials: 'same-origin',
+        credentials: "same-origin",
       });
 
       const data = await res.json().catch(() => null);
       if (!res.ok) {
-        throw new Error(data?.error || 'Delete failed');
+        throw new Error(data?.error || "Delete failed");
       }
 
       setImages((previous) => previous.filter((name) => name !== filename));
@@ -123,8 +145,8 @@ export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) 
       });
       setStatus(`Deleted ${filename}`);
     } catch (err) {
-      console.error('Delete failed', err);
-      setError(err instanceof Error ? err.message : 'Delete failed');
+      console.error("Delete failed", err);
+      setError(err instanceof Error ? err.message : "Delete failed");
     } finally {
       setDeletingName(null);
     }
@@ -135,17 +157,19 @@ export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) 
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <h2 className="text-2xl font-light">{meta.title}</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-600">{meta.description}</p>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-gray-600">
+            {meta.description}
+          </p>
         </div>
         <button
           type="button"
           onClick={() => void loadImages()}
           disabled={loading}
           className={`border border-white/80 bg-white/75 px-4 py-2 text-sm font-medium text-gray-800 transition-colors hover:bg-white ${
-            loading ? 'cursor-not-allowed opacity-60' : ''
+            loading ? "cursor-not-allowed opacity-60" : ""
           }`}
         >
-          {loading ? 'Refreshing...' : 'Refresh'}
+          {loading ? "Refreshing..." : "Refresh"}
         </button>
       </div>
 
@@ -165,17 +189,19 @@ export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) 
             const isDeleting = deletingName === filename;
             const dimensions = imageDimensions[filename];
             const fallbackDimensions =
-              bucket === 'web'
+              bucket === "web"
                 ? { width: 1600, height: 900 }
-                : bucket === 'mobile'
+                : bucket === "mobile"
                   ? { width: 900, height: 1200 }
                   : { width: 1200, height: 1200 };
             const imageCardClassName =
-              bucket === 'portfolio' ? 'bg-white/80 p-4' : 'border border-white/80 bg-white/80 p-4';
+              bucket === "portfolio"
+                ? "bg-white/80 p-4"
+                : "border border-white/80 bg-white/80 p-4";
             const heroImageClassName =
-              bucket === 'web'
-                ? 'mx-auto h-auto max-h-44 w-auto max-w-full object-contain'
-                : 'mx-auto h-auto max-h-60 w-auto max-w-full object-contain';
+              bucket === "web"
+                ? "mx-auto h-auto max-h-44 w-auto max-w-full object-contain"
+                : "mx-auto h-auto max-h-60 w-auto max-w-full object-contain";
 
             return (
               <article key={filename} className={imageCardClassName}>
@@ -204,7 +230,10 @@ export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) 
                   </div>
                 )}
                 <div className="mt-3">
-                  <p className="truncate text-sm text-gray-700" title={filename}>
+                  <p
+                    className="truncate text-sm text-gray-700"
+                    title={filename}
+                  >
                     {filename}
                   </p>
                   {dimensions && (
@@ -218,11 +247,11 @@ export default function ImageManagerClient({ bucket }: { bucket: ImageBucket }) 
                     disabled={isDeleting}
                     className={`mt-3 w-full border px-3 py-2 text-sm font-medium transition-colors ${
                       isDeleting
-                        ? 'cursor-not-allowed border-red-200 bg-red-100 text-red-400'
-                        : 'border-red-300 bg-red-50 text-red-700 hover:bg-red-100'
+                        ? "cursor-not-allowed border-red-200 bg-red-100 text-red-400"
+                        : "border-red-300 bg-red-50 text-red-700 hover:bg-red-100"
                     }`}
                   >
-                    {isDeleting ? 'Deleting...' : 'Delete Image'}
+                    {isDeleting ? "Deleting..." : "Delete Image"}
                   </button>
                 </div>
               </article>

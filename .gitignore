@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Generated responsive hero images (prepared before dev/build)
 /public/generated/hero/
+
+# Browser-compatible copies of original portfolio videos
+/public/generated/portfolio-video/
